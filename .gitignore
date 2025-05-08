@@ -24,14 +24,49 @@ migrate_working_dir/
 #.vscode/
 
 # Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
 .dart_tool/
+.packages
+.pub-cache/
+build/
+flutter_*.png
+flutter_export_environment.sh
+flutter_export_environment.bat
 .flutter-plugins
 .flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
+
+# Android
+android/.gradle/
+android/app/build/
+*.iml
+.gradle
+local.properties
+
+# iOS/macOS
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/ServiceDefinitions.json
+macos/Pods/
+macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Web
+web/generated_plugin_registrant.dart
+
+# VS Code
+.vscode/
+.idea/
+
+# Others
+*.log
+*.lock
+*.tmp
+*.swp
+*.bak
+*.orig
+.DS_Store
+Thumbs.db
 
 # Symbolication related
 app.*.symbols
