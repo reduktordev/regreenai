@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:regreenai/splash_screen.dart';
 import 'package:regreenai/login.dart';
 import 'package:regreenai/signup.dart';
+import 'package:regreenai/homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,11 +20,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // ✅ Ini yang akan ditampilkan pertama
-      routes: {
-        '/signup': (context) => const SignUpPage(),
-        '/login': (context) => const LoginPage(),
-      },
+      home: const HomePage(),
+      // routes: {
+      //   '/signup': (context) => const SignUpPage(),
+      //   '/login': (context) => const LoginPage(),
+      // },
     );
   }
 }

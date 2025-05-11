@@ -57,9 +57,12 @@ flutter:
     - assets/Onboard1.png
     - assets/Onboard2.png
     - assets/Onboard3.jpg
+    - assets/banner.png
+    - assets/separator.png
     - assets/logo/apple.png
     - assets/logo/google.png
     - assets/logo/facebook.png
+    - assets/logo/chatlogo.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
