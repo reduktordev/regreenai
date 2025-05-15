@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:regreenai/componen/bottom_navigation.dart';
+import 'package:regreenai/page/produk_detail.dart';
 
 void main() {
   runApp(const MyApp());
@@ -315,113 +316,18 @@ class JualBeliPage extends StatelessWidget {
     DateTime? createdAt,
     String? description,
   ) {
-    showDialog(
-      context: context,
-      builder:
-          (_) => Dialog(
-            backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (_) => ProductDetailPage(
+              name: name,
+              price: price,
+              stock: stock,
+              createdAt: createdAt,
+              description: description,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            name,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.green[800],
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.close, color: Colors.grey[600]),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Harga: Rp $price',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    if (stock != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        'Stok: $stock',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                    if (createdAt != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        'Dibuat: ${DateFormat('dd/MM/yyyy').format(createdAt)}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 15),
-                    Text(
-                      description ?? 'Deskripsi produk belum tersedia.',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        height: 1.4,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.shopping_cart),
-                        label: const Text('Beli Sekarang'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 24,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Implementasi beli sekarang
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Fungsi beli belum tersedia.'),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+      ),
     );
   }
 }

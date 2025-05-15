@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:regreenai/homepage.dart';
+import 'package:regreenai/page/chat_detail_dart.dart';
 
 class ModernChatBubblePage extends StatelessWidget {
   const ModernChatBubblePage({super.key});
@@ -76,7 +77,19 @@ class ModernChatBubblePage extends StatelessWidget {
           return Container(
             color: Colors.white,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (_) => ChatDetailPage(
+                          name: chat['name'],
+                          avatar: chat['avatar'],
+                          phoneNumber: '',
+                        ),
+                  ),
+                );
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,

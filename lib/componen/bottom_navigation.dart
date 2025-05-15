@@ -4,6 +4,7 @@ import 'package:regreenai/homepage.dart' as home;
 import 'package:regreenai/page/chat_bubble_page.dart';
 import 'package:regreenai/page/profile.dart';
 import 'package:regreenai/page/buy_forum.dart';
+import 'package:regreenai/page/forum_page.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int currentIndex;
@@ -28,8 +29,10 @@ class CustomBottomNavigation extends StatelessWidget {
             _navigateToScreen(context, const ModernChatBubblePage());
             break;
           case 2:
-          case 3:
             _navigateToScreen(context, const JualBeliPage());
+            break;
+          case 3:
+            _navigateToScreen(context, const ForumPage());
             break;
           case 4:
             _navigateToScreen(context, const ProfilePage());
