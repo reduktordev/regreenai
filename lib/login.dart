@@ -26,10 +26,7 @@ class _LoginPageState extends State<LoginPage> {
               const Center(
                 child: Text(
                   'Login',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 36),
@@ -71,7 +68,29 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.green,
                   ),
                   onPressed: () {
-                    // Handle login logic
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text;
+
+                    if (email == 'admin@gmail.com' && password == 'admin123') {
+                      // Jika login berhasil, arahkan ke halaman home
+                      Navigator.pushReplacementNamed(context, '/home');
+                    } else {
+                      // Tampilkan dialog error
+                      showDialog(
+                        context: context,
+                        builder:
+                            (context) => AlertDialog(
+                              title: const Text('Login Gagal'),
+                              content: const Text('Email atau password salah.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                      );
+                    }
                   },
                   child: const Text(
                     'Login',
@@ -114,10 +133,11 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pushNamed(context, '/signup');
-                          },
+                        recognizer:
+                            TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushNamed(context, '/signup');
+                              },
                       ),
                     ],
                   ),
@@ -137,11 +157,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: BoxShape.circle,
         color: Color(0xFFF1F1F1),
       ),
-      child: Image.asset(
-        assetPath,
-        height: 24,
-        width: 24,
-      ),
+      child: Image.asset(assetPath, height: 24, width: 24),
     );
   }
 }

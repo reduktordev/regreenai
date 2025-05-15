@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:regreenai/chatpage.dart';
+import 'package:regreenai/page/chatpage.dart';
+import 'package:regreenai/componen/bottom_navigation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,7 +9,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
@@ -35,18 +37,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: greenColor,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
+
+      // BOTTOM NAVIGATION
+      // In profile_page.dart
+      // Remove the entire BottomNavigationBar widget and replace it with:
+
+      // FLOATING ACTION BUTTON
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -57,14 +53,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         backgroundColor: greenColor,
         foregroundColor: Colors.white,
         shape: const CircleBorder(),
-        child: Image.asset(
-          'assets/logo/chatlogo.png',
-          width: 24,
-          height: 24,
-        ),
+        child: Image.asset('assets/logo/chatlogo.png', width: 24, height: 24),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+      // BODY
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -82,7 +75,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
-
                     Container(
                       height: 200,
                       width: double.infinity,
@@ -97,7 +89,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         ),
                       ),
                     ),
-
                     Container(
                       height: 200,
                       width: double.infinity,
@@ -112,7 +103,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         ),
                       ),
                     ),
-
                     Positioned(
                       left: 16,
                       top: 35,
@@ -148,7 +138,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
               const SizedBox(height: 16),
 
-              // Teks Judul
+              // Judul
               const Text(
                 'Excited To Farm, Manage, And Grow Smarter?',
                 style: TextStyle(
@@ -159,27 +149,33 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
               const SizedBox(height: 16),
 
-              // Search Bar
+              // Search
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Search',
                   filled: true,
-                  fillColor: Colors.white, 
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 16,
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.green.shade400), 
+                    borderSide: BorderSide(color: Colors.green.shade400),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.green.shade700, width: 2),
+                    borderSide: BorderSide(
+                      color: Colors.green.shade700,
+                      width: 2,
+                    ),
                   ),
-                  suffixIcon: const Icon(Icons.search, color: Colors.green,),
+                  suffixIcon: const Icon(Icons.search, color: Colors.green),
                 ),
               ),
               const SizedBox(height: 24),
 
-              // News
+              // Section
               _sectionHeader(const Icon(Icons.newspaper), 'News'),
               const SizedBox(height: 20),
               _horizontalImageList(),
@@ -221,26 +217,30 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   ),
                 ),
               ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Hot Topics
-              _sectionHeader(const Icon(Icons.local_fire_department), 'Hot Topics'),
+              _sectionHeader(
+                const Icon(Icons.local_fire_department),
+                'Hot Topics',
+              ),
               const SizedBox(height: 20),
               _horizontalImageList(),
               const SizedBox(height: 16),
 
               // Top Sales
-              _sectionHeader(const Icon(Icons.auto_graph),'Top Sales'),
+              _sectionHeader(const Icon(Icons.auto_graph), 'Top Sales'),
               const SizedBox(height: 12),
               _topSalesGrid(),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 0),
     );
   }
 
-  Widget _sectionHeader(Icon icon, String title ) {
+  Widget _sectionHeader(Icon icon, String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -258,7 +258,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       ],
     );
   }
-
 
   Widget _horizontalImageList() {
     return SizedBox(
