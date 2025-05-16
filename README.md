@@ -70,7 +70,7 @@ Coming soon...
 
 | Role | Name                  | GitHub                                             | Profile Picture                            |
 |------|-----------------------|----------------------------------------------------|---------------------------------------------|
-| 👑 Lead | I Gede Agus Supartana | [@agussupartana](https://github.com/agussupartana) | ![](https://github.com/agussupartana.png?size=100) |
+| 👑 Lead | I Gede Agus Supartana | [@Teslakw](https://github.com/Teslakw) | ![](https://github.com/Teslakw.png?size=100) |
 
 ---
 
