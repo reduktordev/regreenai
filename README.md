@@ -66,9 +66,12 @@ Coming soon...
 
 ---
 
-## 📧 Contact
-For suggestions, collaborations, or support, feel free to reach out via [your.email@example.com].
+## 👥 Contribution
 
+| Name             | GitHub                                           | Profile Picture                            |
+|------------------|--------------------------------------------------|---------------------------------------------|
+| I Gede Agus Supartana | [@Teslakw](https://github.com/Teslakwa) | ![](https://github.com/Teslakw.png?size=100) |
+| Nama Lain (jika ada) | [@username](https://github.com/username)     | ![](https://github.com/username.png?size=100) |
 ---
 
 > Together, let's grow a better future with ReGreenAI. 🌾🌱
