@@ -4,6 +4,12 @@
 
 ---
 
+## 📷 App Logo
+
+> *(Insert your app logo below — e.g., `![Logo](assets/logo.png)`)*
+
+---
+
 ## 🧑‍🌾 Overview
 
 Farming today can be tough. Many farmers face challenges such as:
