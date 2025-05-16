@@ -6,7 +6,7 @@
 
 ## 📷 App Logo
 
-> *(Insert your app logo below — e.g., `![Logo](assets/logo.png)`)*
+**![Logo](assets/logo.png)`**
 
 ---
 
