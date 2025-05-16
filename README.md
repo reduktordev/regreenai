@@ -1,16 +1,1 @@
-# regreenai
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Farming today can be tough. Many farmers face challenges like unpredictable weather, lack of information, and limited access to markets. To help overcome these problems, we created ReGreenAI a mobile app designed to support farmers in their daily activities. ReGreenAI is simple, helpful, and easy to use. With ReGreenAI, farmers can get instant help through our AI Chatbot, which can answer questions about crops, pests, fertilizers, and more. The app also includes a Forum Discussion feature where farmers can connect, share experiences, ask for advice, and learn from each other. We also provide a Forum Trade section that makes it easy for users to buy, sell, or trade farming products and tools with others in the community. In addition, ReGreenAI offers Farming Recommendations based on your location and farming needs such as what crops to grow and when to plant them. To help you plan better, ReGreenAI includes Weather Updates so you can stay informed and make smarter farming decisions. ReGreenAI is made for farmers, by people who care about farming.
