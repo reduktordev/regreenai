@@ -110,4 +110,15 @@ You can download the latest version of the app from the link below:
 
 > The app is hosted on Google Drive. Make sure to allow downloads if prompted.
 ---
+## ⚠️ Note on App Icon & Name
+
+> 🕒 **Please note:**  
+> Due to time constraints, we haven’t yet updated the app’s launcher icon and name from the default Flutter settings.
+
+The current version of the APK may still display the default **Flutter icon** and a placeholder name.  
+These will be updated in the upcoming release to reflect the official **ReGreenAI** branding.
+
+Thank you for your understanding and support as we continue to improve the app! 🌱
+
+---
 > Together, let's grow a better future with ReGreenAI. 🌾🌱
