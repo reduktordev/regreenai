@@ -90,4 +90,24 @@ Coming soon...
 
 ---
 
+## 📱 App Overview
+
+| Feature        | Description                              |
+|----------------|------------------------------------------|
+| Platform       | Android                                  |
+| Format         | APK (Android Package)                    |
+| Current Version| v1.0.0                                   |
+| Last Update    | May 16, 2025                             |
+| Download Link  | [Click here](https://drive.google.com/drive/folders/1yNbxgBemP_1gByUKMRX9eYLJmIiL855F) |
+
+---
+
+## 📲 Download the App
+
+You can download the latest version of the app from the link below:
+
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://drive.google.com/drive/folders/1yNbxgBemP_1gByUKMRX9eYLJmIiL855F)
+
+> The app is hosted on Google Drive. Make sure to allow downloads if prompted.
+---
 > Together, let's grow a better future with ReGreenAI. 🌾🌱
