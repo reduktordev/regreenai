@@ -43,9 +43,6 @@ dependencies:
   google_fonts: ^6.1.0
   file_picker: ^6.1.1
   url_launcher: ^6.1.7
-  firebase_core: ^2.18.0
-  firebase_storage: ^11.5.0
-  cloud_firestore: ^4.8.1
 
 
 dev_dependencies:
@@ -82,6 +79,23 @@ flutter:
     - .env
     - assets/padi.jpg
     - assets/user.jpg
+    - assets/sayuran.jpg
+    - assets/tebu.jpeg
+    - assets/kedelai.jpg
+    - assets/jagung.jpeg
+    - assets/buah.jpg
+    - assets/beras.jpg
+    - assets/user.jpg
+    - assets/padi.jpg
+    - assets/kekeringan.jpg
+    - assets/hama.jpg
+    - assets/panen.jpg
+    - assets/irigasi.jpg
+    - assets/blog1.jpg
+    - assets/blog2.jpg
+    - assets/blog3.jpg
+    - assets/blog4.jpg
+    - assets/blog5.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

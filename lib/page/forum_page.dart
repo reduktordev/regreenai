@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:regreenai/componen/bottom_navigation.dart';
 import 'package:intl/intl.dart';
+import 'forum_detail_page.dart';
+import 'package:regreenai/componen/bottom_navigation.dart';
+import 'package:regreenai/data/forum_data.dart'; // import data forum
 
 class ForumPage extends StatelessWidget {
   const ForumPage({super.key});
@@ -8,7 +10,7 @@ class ForumPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F3F4), // Latar ala Facebook
+      backgroundColor: const Color(0xFFF1F3F4),
       appBar: AppBar(
         backgroundColor: Colors.green[700],
         elevation: 0,
@@ -24,93 +26,90 @@ class ForumPage extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: 10, // dummy
+        itemCount: forumPosts.length,
         itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Header user
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage('assets/user.jpg'),
-                        radius: 20,
+          final post = forumPosts[index];
+          final dateTime = DateTime.parse(post['time']);
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (_) => ForumDetailPage(
+                        user: post['user'],
+                        dateTime: dateTime,
+                        image: post['image'],
+                        title: post['title'],
+                        description: post['description'],
                       ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'User ${index + 1}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            DateFormat(
-                              'dd MMM yyyy • hh:mm a',
-                            ).format(DateTime.now()),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                ),
+              );
+            },
+            child: Card(
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header user + waktu
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                          backgroundImage: AssetImage('assets/user.jpg'),
+                          radius: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              post['user'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                            Text(
+                              DateFormat(
+                                'dd MMM yyyy • hh:mm a',
+                              ).format(dateTime),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    // Gambar post
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        post['image'],
+                        height: 180,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  /// Gambar post
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/padi.jpg',
-                      height: 180,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
                     ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  /// Konten teks
-                  Text(
-                    'Ini adalah isi dari postingan forum ke-${index + 1}. Ayo diskusi atau jual beli seputar pertanian!',
-                    style: const TextStyle(fontSize: 15),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  /// Tombol lihat detail
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Navigasi ke detail belum tersedia.'),
-                          ),
-                        );
-                      },
-                      child: const Text('Lihat Detail'),
+                    const SizedBox(height: 12),
+                    Text(
+                      post['description'],
+                      style: const TextStyle(fontSize: 15),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
         },
       ),
-
-      /// Tombol tambah postingan
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -119,15 +118,14 @@ class ForumPage extends StatelessWidget {
             ),
           );
         },
-        backgroundColor: Colors.green[800], // Hijau
-        foregroundColor: Colors.white, // Teks dan ikon putih
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text(
           'Buat Postingan',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-
       bottomNavigationBar: const CustomBottomNavigation(currentIndex: 3),
     );
   }

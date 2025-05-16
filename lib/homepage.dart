@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:regreenai/page/chatpage.dart';
 import 'package:regreenai/componen/bottom_navigation.dart';
+import 'package:regreenai/data/forum_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +14,8 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
+
+  final Color greenColor = const Color(0xFF64D37A);
 
   @override
   void initState() {
@@ -31,18 +34,38 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  final Color greenColor = const Color(0xFF64D37A);
+  final List<Map<String, String>> blogList = [
+    {
+      "title": "Cara Menanam Sayuran di Pekarangan",
+      "date": "16 Mei 2025",
+      "image": "assets/blog1.jpg",
+    },
+    {
+      "title": "Strategi Ekspor Pangan Lokal",
+      "date": "12 Mei 2025",
+      "image": "assets/blog2.jpg",
+    },
+    {
+      "title": "Pupuk Organik: Tips dan Trik",
+      "date": "10 Mei 2025",
+      "image": "assets/blog3.jpg",
+    },
+    {
+      "title": "Hidroponik untuk Pemula",
+      "date": "08 Mei 2025",
+      "image": "assets/blog4.jpg",
+    },
+    {
+      "title": "Sistem Irigasi Pintar di Lahan Kering",
+      "date": "05 Mei 2025",
+      "image": "assets/blog5.jpg",
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-      // BOTTOM NAVIGATION
-      // In profile_page.dart
-      // Remove the entire BottomNavigationBar widget and replace it with:
-
-      // FLOATING ACTION BUTTON
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -56,187 +79,116 @@ class _HomePageState extends State<HomePage>
         child: Image.asset('assets/logo/chatlogo.png', width: 24, height: 24),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
-      // BODY
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Banner
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'assets/banner.png',
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.black.withOpacity(0.6),
-                            Colors.transparent,
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.black.withOpacity(0.4),
-                            Colors.transparent,
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 16,
-                      top: 35,
-                      right: 100,
-                      child: FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'From Seed To Harvest, Manage\nIt All In One Smart Platform',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                height: 1.4,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Track, plan, and optimize every farming\noperation in one platform.',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.white70,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildBanner(),
               const SizedBox(height: 16),
-
-              // Judul
               const Text(
                 'Excited To Farm, Manage, And Grow Smarter?',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-
-              // Search
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 0,
-                    horizontal: 16,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.green.shade400),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Colors.green.shade700,
-                      width: 2,
-                    ),
-                  ),
-                  suffixIcon: const Icon(Icons.search, color: Colors.green),
-                ),
-              ),
+              _buildSearchBar(),
               const SizedBox(height: 24),
-
-              // Section
-              _sectionHeader(const Icon(Icons.newspaper), 'News'),
+              _sectionHeader(const Icon(Icons.newspaper), 'News & Blog'),
               const SizedBox(height: 20),
-              _horizontalImageList(),
+              _blogHorizontalList(),
               const SizedBox(height: 16),
-
-              // Separator Image
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'assets/separator.png',
-                        width: double.infinity,
-                        height: 140,
-                        fit: BoxFit.cover,
-                      ),
-                      Container(
-                        height: 140,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [Colors.black54, Colors.transparent],
-                          ),
-                        ),
-                      ),
-                      const Positioned(
-                        bottom: 16,
-                        left: 16,
-                        right: 16,
-                        child: Text(
-                          'Rice Feeds Half the Planet\nBut Only 6 Countries Produce 75%!\nChina, India, & Indonesia lead the global rice trade.',
-                          style: TextStyle(color: Colors.white, fontSize: 13),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _separatorImage(),
               const SizedBox(height: 16),
-
-              // Hot Topics
               _sectionHeader(
                 const Icon(Icons.local_fire_department),
                 'Hot Topics',
               ),
               const SizedBox(height: 20),
-              _horizontalImageList(),
+              _forumHorizontalList(),
               const SizedBox(height: 16),
-
-              // Top Sales
               _sectionHeader(const Icon(Icons.auto_graph), 'Top Sales'),
               const SizedBox(height: 12),
               _topSalesGrid(),
+              const SizedBox(height: 24),
             ],
           ),
         ),
       ),
       bottomNavigationBar: const CustomBottomNavigation(currentIndex: 0),
+    );
+  }
+
+  Widget _buildBanner() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/banner.png',
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.black.withOpacity(0.6), Colors.transparent],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 16,
+            top: 35,
+            right: 100,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'From Seed To Harvest, Manage\nIt All In One Smart Platform',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Track, plan, and optimize every farming\noperation in one platform.',
+                    style: TextStyle(fontSize: 10, color: Colors.white70),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return TextField(
+      decoration: InputDecoration(
+        hintText: 'Search',
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.green.shade400),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.green.shade700, width: 2),
+        ),
+        suffixIcon: const Icon(Icons.search, color: Colors.green),
+      ),
     );
   }
 
@@ -259,35 +211,91 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _horizontalImageList() {
+  Widget _blogHorizontalList() {
     return SizedBox(
-      height: 140,
+      height: 160,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 3,
+        itemCount: blogList.length,
         itemBuilder: (context, index) {
+          final blog = blogList[index];
           return Container(
-            width: 120,
+            width: 140,
             margin: const EdgeInsets.only(right: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 80,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    blog["image"]!,
+                    height: 80,
+                    width: 140,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Smart Farming",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  blog["title"]!,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const Text(
-                  "March 20, 2025",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                Text(
+                  blog["date"]!,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _forumHorizontalList() {
+    return SizedBox(
+      height: 150,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: forumPosts.length,
+        itemBuilder: (context, index) {
+          final item = forumPosts[index];
+          return Container(
+            width: 200,
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey.shade100,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    item["image"]!,
+                    width: 200,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    item["title"]!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    item["time"]!,
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                  ),
                 ),
               ],
             ),
@@ -327,6 +335,44 @@ class _HomePageState extends State<HomePage>
           ),
         );
       }),
+    );
+  }
+
+  Widget _separatorImage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: Stack(
+          children: [
+            Image.asset(
+              'assets/separator.png',
+              width: double.infinity,
+              height: 140,
+              fit: BoxFit.cover,
+            ),
+            Container(
+              height: 140,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.black54, Colors.transparent],
+                ),
+              ),
+            ),
+            const Positioned(
+              bottom: 16,
+              left: 16,
+              right: 16,
+              child: Text(
+                'Rice Feeds Half the Planet\nBut Only 6 Countries Produce 75%!\nChina, India, & Indonesia lead the global rice trade.',
+                style: TextStyle(color: Colors.white, fontSize: 13),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

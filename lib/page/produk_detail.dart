@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'chat_bubble_page.dart'; // Tambahkan import halaman chat jika ada
 
 class ProductDetailPage extends StatefulWidget {
   final String name;
@@ -7,6 +8,7 @@ class ProductDetailPage extends StatefulWidget {
   final int? stock;
   final DateTime? createdAt;
   final String? description;
+  final String image; // properti image wajib diisi
 
   const ProductDetailPage({
     Key? key,
@@ -15,6 +17,7 @@ class ProductDetailPage extends StatefulWidget {
     this.stock,
     this.createdAt,
     this.description,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -35,18 +38,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void _submitComment() {
     final comment = _commentController.text.trim();
     if (comment.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Komentar tidak boleh kosong')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Komentar tidak boleh kosong')),
+      );
       return;
     }
     setState(() {
       _comments.insert(0, comment);
       _commentController.clear();
-      _showAllComments =
-          false; // reset tampilan komentar lengkap setelah komentar baru
+      _showAllComments = false;
     });
     FocusScope.of(context).unfocus();
+  }
+
+  void _goToChat(String role) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ModernChatBubblePage(title: 'Chat $role'),
+      ),
+    );
   }
 
   @override
@@ -56,7 +67,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ? DateFormat('dd MMM yyyy').format(widget.createdAt!)
             : '';
 
-    // Batasi komentar yang ditampilkan
     final displayedComments =
         _showAllComments
             ? _comments
@@ -72,22 +82,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: 'product-image-${widget.name}',
-                child: Image.asset('assets/padi.jpg', fit: BoxFit.cover),
+                child:
+                    widget.image.startsWith('http')
+                        ? Image.network(widget.image, fit: BoxFit.cover)
+                        : Image.asset(widget.image, fit: BoxFit.cover),
               ),
             ),
             actions: [
               IconButton(
-                icon: Icon(Icons.share, color: Colors.white),
+                icon: const Icon(Icons.share, color: Colors.white),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Fitur share belum tersedia')),
+                    const SnackBar(content: Text('Fitur share belum tersedia')),
                   );
                 },
-                tooltip: 'Bagikan Produk',
               ),
             ],
           ),
-
           SliverToBoxAdapter(
             child: Container(
               color: Colors.white,
@@ -103,9 +114,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       color: Colors.green[900],
                     ),
                   ),
-
-                  SizedBox(height: 8),
-
+                  const SizedBox(height: 8),
                   Text(
                     'Rp ${widget.price}',
                     style: TextStyle(
@@ -114,9 +123,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       color: Colors.green[700],
                     ),
                   ),
-
-                  SizedBox(height: 12),
-
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       if (widget.stock != null)
@@ -135,7 +142,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   ? Colors.green
                                   : Colors.red[400],
                         ),
-                      Spacer(),
+                      const Spacer(),
                       if (widget.createdAt != null)
                         Text(
                           'Dibuat: $formattedDate',
@@ -143,10 +150,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                     ],
                   ),
-
-                  SizedBox(height: 20),
-
-                  // Deskripsi produk tanpa Card, font sederhana dan warna netral
+                  const SizedBox(height: 20),
                   Text(
                     widget.description ?? 'Deskripsi produk belum tersedia.',
                     style: TextStyle(
@@ -155,79 +159,59 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       color: Colors.grey[800],
                     ),
                   ),
-
-                  SizedBox(height: 36),
-
+                  const SizedBox(height: 36),
                   Row(
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.chat_bubble_outline,
                             size: 20,
                             color: Colors.white,
                           ),
-                          label: Text(
+                          label: const Text(
                             'Chat Penjual',
                             style: TextStyle(color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green[600],
-                            padding: EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
                             elevation: 6,
                             shadowColor: Colors.green.shade900.withOpacity(0.5),
                           ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Chat dengan penjual belum tersedia.',
-                                ),
-                              ),
-                            );
-                          },
+                          onPressed: () => _goToChat('Penjual'),
                         ),
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: ElevatedButton.icon(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.support_agent_outlined,
                             size: 20,
                             color: Colors.white,
                           ),
-                          label: Text(
+                          label: const Text(
                             'Chat Admin',
                             style: TextStyle(color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green[900],
-                            padding: EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
                             elevation: 6,
                             shadowColor: Colors.green.shade900.withOpacity(0.8),
                           ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Chat dengan admin belum tersedia.',
-                                ),
-                              ),
-                            );
-                          },
+                          onPressed: () => _goToChat('Admin'),
                         ),
                       ),
                     ],
                   ),
-
-                  SizedBox(height: 40),
-
+                  const SizedBox(height: 40),
                   Text(
                     'Diskusi Produk',
                     style: TextStyle(
@@ -236,10 +220,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       color: Colors.green[900],
                     ),
                   ),
-                  SizedBox(height: 12),
-
+                  const SizedBox(height: 12),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.green[50],
                       borderRadius: BorderRadius.circular(12),
@@ -255,13 +241,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 12,
                             ),
                           ),
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         Align(
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
@@ -271,13 +257,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 24,
                                 vertical: 12,
                               ),
                               elevation: 5,
                             ),
-                            child: Text(
+                            child: const Text(
                               'Kirim Komentar',
                               style: TextStyle(color: Colors.white),
                             ),
@@ -286,13 +272,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 24),
-
+                  const SizedBox(height: 24),
                   if (_comments.isEmpty)
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.green[50],
                         borderRadius: BorderRadius.circular(12),
@@ -310,13 +294,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     Column(
                       children: [
                         ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: displayedComments.length,
-                          separatorBuilder: (_, __) => SizedBox(height: 12),
+                          separatorBuilder:
+                              (_, __) => const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             return Container(
-                              padding: EdgeInsets.all(14),
+                              padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
                                 color: Colors.green[100],
                                 borderRadius: BorderRadius.circular(12),
@@ -331,7 +316,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             );
                           },
                         ),
-
                         if (_comments.length > 5 && !_showAllComments)
                           TextButton(
                             onPressed: () {

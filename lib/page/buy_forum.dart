@@ -20,8 +20,41 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class JualBeliPage extends StatelessWidget {
+class JualBeliPage extends StatefulWidget {
   const JualBeliPage({super.key});
+
+  // Daftar gambar produk
+  static const List<String> productImages = [
+    "assets/beras.jpg",
+    "assets/jagung.jpeg",
+    "assets/sayuran.jpg",
+    "assets/buah.jpg",
+    "assets/kedelai.jpg",
+    "assets/tebu.jpeg",
+  ];
+
+  @override
+  State<JualBeliPage> createState() => _JualBeliPageState();
+}
+
+class _JualBeliPageState extends State<JualBeliPage> {
+  List<Map<String, dynamic>> _filteredProducts = List.from(_products);
+  String _searchQuery = '';
+
+  void _filterProducts(String query) {
+    setState(() {
+      _searchQuery = query;
+      if (query.isEmpty) {
+        _filteredProducts = List.from(_products);
+      } else {
+        _filteredProducts =
+            _products.where((product) {
+              final name = product['name']?.toString().toLowerCase() ?? '';
+              return name.contains(query.toLowerCase());
+            }).toList();
+      }
+    });
+  }
 
   // Widget icon tas + modern
   Widget modernShoppingBagPlusIcon() {
@@ -40,16 +73,12 @@ class JualBeliPage extends StatelessWidget {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
-            padding: EdgeInsets.all(2), // dikurangi dari 4 ke 2
-            child: Icon(
-              Icons.add,
-              size: 12, // dikurangi dari 16 ke 12
-              color: Colors.white,
-            ),
+            padding: const EdgeInsets.all(2),
+            child: const Icon(Icons.add, size: 12, color: Colors.white),
           ),
         ),
       ],
@@ -74,7 +103,7 @@ class JualBeliPage extends StatelessWidget {
                   if (constraints.maxWidth > 800) crossAxisCount = 3;
 
                   return GridView.builder(
-                    itemCount: _products.length,
+                    itemCount: _filteredProducts.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
                       mainAxisSpacing: 20,
@@ -82,7 +111,7 @@ class JualBeliPage extends StatelessWidget {
                       childAspectRatio: 0.95,
                     ),
                     itemBuilder: (context, index) {
-                      final product = _products[index];
+                      final product = _filteredProducts[index];
                       return _buildProductCard(
                         context,
                         product['name'] ?? 'Nama produk kosong',
@@ -90,6 +119,7 @@ class JualBeliPage extends StatelessWidget {
                         product['stock'],
                         product['created_at'],
                         product['description'],
+                        product['image'],
                       );
                     },
                   );
@@ -110,7 +140,6 @@ class JualBeliPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Judul dan subjudul
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -124,7 +153,7 @@ class JualBeliPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '200 Forum',
+                  '${_filteredProducts.length} Forum',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -134,13 +163,10 @@ class JualBeliPage extends StatelessWidget {
               ],
             ),
 
-            // Ganti icon button dengan icon tas + modern
             Tooltip(
               message: 'Tambah produk baru',
               child: IconButton(
-                onPressed: () {
-                  // aksi tambah produk
-                },
+                onPressed: () {},
                 icon: modernShoppingBagPlusIcon(),
                 splashRadius: 24,
               ),
@@ -150,7 +176,6 @@ class JualBeliPage extends StatelessWidget {
 
         const SizedBox(height: 20),
 
-        // Search Bar
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -165,6 +190,7 @@ class JualBeliPage extends StatelessWidget {
             ],
           ),
           child: TextField(
+            onChanged: _filterProducts,
             decoration: InputDecoration(
               hintText: 'Cari produk atau diskusi...',
               prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
@@ -189,6 +215,7 @@ class JualBeliPage extends StatelessWidget {
     int? stock,
     DateTime? createdAt,
     String? description,
+    String image,
   ) {
     return Material(
       elevation: 3,
@@ -203,6 +230,7 @@ class JualBeliPage extends StatelessWidget {
               stock,
               createdAt,
               description,
+              image,
             ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +241,7 @@ class JualBeliPage extends StatelessWidget {
                 top: Radius.circular(10),
               ),
               child: Image.asset(
-                'assets/padi.jpg',
+                image,
                 width: double.infinity,
                 height: 140,
                 fit: BoxFit.cover,
@@ -296,6 +324,7 @@ class JualBeliPage extends StatelessWidget {
                             stock,
                             createdAt,
                             description,
+                            image,
                           ),
                     ),
                   ),
@@ -315,6 +344,7 @@ class JualBeliPage extends StatelessWidget {
     int? stock,
     DateTime? createdAt,
     String? description,
+    String image,
   ) {
     Navigator.push(
       context,
@@ -326,6 +356,7 @@ class JualBeliPage extends StatelessWidget {
               stock: stock,
               createdAt: createdAt,
               description: description,
+              image: image,
             ),
       ),
     );
@@ -334,40 +365,51 @@ class JualBeliPage extends StatelessWidget {
 
 final List<Map<String, dynamic>> _products = [
   {
-    'name': 'Padi Organik Super',
+    'name': 'Beras Organik Super',
     'price': '30.000',
     'stock': 15,
     'created_at': DateTime(2023, 4, 11),
-    'description':
-        'Padi organik berkualitas tinggi dengan hasil panen melimpah.',
+    'description': 'Beras organik kualitas premium hasil panen terbaru',
+    'image': JualBeliPage.productImages[0],
   },
   {
-    'name': 'Beras Premium',
-    'price': '45.000',
-    'stock': 20,
-    'created_at': DateTime(2023, 2, 28),
-    'description': 'Beras premium, sangat cocok untuk keluarga Anda.',
-  },
-  {
-    'name': 'Benih Padi Unggul',
-    'price': '150.000',
+    'name': 'Jagung Manis Segar',
+    'price': '15.000',
     'stock': 50,
     'created_at': DateTime(2023, 5, 2),
-    'description':
-        'Benih padi unggul untuk hasil panen maksimal dan tahan penyakit.',
+    'description': 'Jagung manis langsung dari kebun, masih segar',
+    'image': JualBeliPage.productImages[1],
   },
   {
-    'name': 'Pupuk Organik',
+    'name': 'Sayuran Organik Mix',
     'price': '25.000',
-    'stock': 60,
+    'stock': 30,
     'created_at': DateTime(2023, 3, 14),
-    'description': 'Pupuk organik ramah lingkungan untuk pertanian sehat.',
+    'description': 'Paket sayuran organik (kangkung, bayam, sawi)',
+    'image': JualBeliPage.productImages[2],
   },
   {
-    'name': 'Alat Panen Padi',
-    'price': '500.000',
-    'stock': 7,
+    'name': 'Buah Naga Merah',
+    'price': '45.000',
+    'stock': 20,
     'created_at': DateTime(2023, 4, 20),
-    'description': 'Alat panen padi modern dan efisien.',
+    'description': 'Buah naga merah segar hasil panen pagi',
+    'image': JualBeliPage.productImages[3],
+  },
+  {
+    'name': 'Kedelai Lokal',
+    'price': '18.000',
+    'stock': 100,
+    'created_at': DateTime(2023, 2, 28),
+    'description': 'Kedelai lokal kualitas ekspor',
+    'image': JualBeliPage.productImages[4],
+  },
+  {
+    'name': 'Tebu Manis',
+    'price': '12.000',
+    'stock': 80,
+    'created_at': DateTime(2023, 5, 10),
+    'description': 'Tebu segar langsung dari kebun',
+    'image': JualBeliPage.productImages[5],
   },
 ];

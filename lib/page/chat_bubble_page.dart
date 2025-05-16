@@ -3,7 +3,9 @@ import 'package:regreenai/homepage.dart';
 import 'package:regreenai/page/chat_detail_dart.dart';
 
 class ModernChatBubblePage extends StatelessWidget {
-  const ModernChatBubblePage({super.key});
+  final String title;
+
+  const ModernChatBubblePage({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class ModernChatBubblePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Messages',
+          "Chats",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         backgroundColor: Colors.white,
@@ -68,6 +70,7 @@ class ModernChatBubblePage extends StatelessWidget {
           ),
         ],
       ),
+
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: 16),
         itemCount: chatList.length,
@@ -204,7 +207,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ModernChatBubblePage(),
+      home: ModernChatBubblePage(title: 'Chat List'),
     ),
   );
 }

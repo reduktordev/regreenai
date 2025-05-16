@@ -26,7 +26,10 @@ class CustomBottomNavigation extends StatelessWidget {
             _navigateToScreen(context, const home.HomePage());
             break;
           case 1:
-            _navigateToScreen(context, const ModernChatBubblePage());
+            _navigateToScreen(
+              context,
+              const ModernChatBubblePage(title: 'Chat List'),
+            );
             break;
           case 2:
             _navigateToScreen(context, const JualBeliPage());
