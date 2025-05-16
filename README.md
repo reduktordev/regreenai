@@ -71,6 +71,7 @@ Coming soon...
 | Role | Name                  | GitHub                                             | Profile Picture                            |
 |------|-----------------------|----------------------------------------------------|---------------------------------------------|
 | 👑 Lead | I Gede Agus Supartana | [@Teslakw](https://github.com/Teslakw) | ![](https://github.com/Teslakw.png?size=100) |
+|------| I Putu Willy Nugraha | [@Lincosin](https://github.com/Lincosin)     | ![](https://github.com/Lincosin.png?size=100) |
 
 ---
 
