@@ -6,7 +6,7 @@
 
 ## 📷 App Logo
 
-**![Logo](assets/logo.png?size=300)`**
+**![Logo](assets/logo.png?size=100)`**
 
 ---
 ## 🧱 System Architecture
