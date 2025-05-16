@@ -66,12 +66,12 @@ Coming soon...
 
 ---
 
-## 👥 Contribution
+## 👥 Contributors
 
-| Name             | GitHub                                           | Profile Picture                            |
-|------------------|--------------------------------------------------|---------------------------------------------|
-| I Gede Agus Supartana | [@Teslakw](https://github.com/Teslakwa) | ![](https://github.com/Teslakw.png?size=100) |
-| Nama Lain (jika ada) | [@username](https://github.com/username)     | ![](https://github.com/username.png?size=100) |
+| Role | Name                  | GitHub                                             | Profile Picture                            |
+|------|-----------------------|----------------------------------------------------|---------------------------------------------|
+| 👑 Lead | I Gede Agus Supartana | [@agussupartana](https://github.com/agussupartana) | ![](https://github.com/agussupartana.png?size=100) |
+
 ---
 
 > Together, let's grow a better future with ReGreenAI. 🌾🌱
