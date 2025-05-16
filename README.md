@@ -10,7 +10,7 @@
 
 ---
 ## 🧱 System Architecture
-**![arc](assets/user (1).jpg)`**
+**![arc](assets/arc.jpg)`**
 ---
 
 ## 🧑‍🌾 Overview
