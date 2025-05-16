@@ -1,147 +1,101 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final String name;
   final String avatar;
-  final String phoneNumber; // Tambahkan nomor telepon
+  final String phoneNumber; // Bisa kamu pakai kalau perlu
 
   const ChatDetailPage({
-    super.key,
+    Key? key,
     required this.name,
     required this.avatar,
-    required this.phoneNumber, // input no telepon
-  });
+    required this.phoneNumber,
+  }) : super(key: key);
 
   @override
-  State<ChatDetailPage> createState() => _ChatDetailPageState();
+  _ChatDetailPageState createState() => _ChatDetailPageState();
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
-  final List<Map<String, dynamic>> messages = [];
   final TextEditingController _controller = TextEditingController();
-  File? _selectedFile;
+  final ScrollController _scrollController = ScrollController();
 
-  void sendMessage({String? text, File? file, String? fileName}) {
-    if ((text?.trim().isEmpty ?? true) && file == null) return;
+  // Mock data pesan chat
+  List<Map<String, dynamic>> messages = [
+    {
+      'fromMe': false,
+      'text': 'Halo, ada yang bisa saya bantu?',
+      'time': '10:00 AM',
+    },
+    {
+      'fromMe': true,
+      'text': 'Saya mau tanya soal panen kemarin.',
+      'time': '10:02 AM',
+    },
+    {
+      'fromMe': false,
+      'text': 'Tentu, panen berjalan lancar dengan hasil bagus!',
+      'time': '10:05 AM',
+    },
+  ];
+
+  void _sendMessage() {
+    String text = _controller.text.trim();
+    if (text.isEmpty) return;
 
     setState(() {
       messages.add({
-        'text': text ?? '',
-        'file': file,
-        'fileName': fileName,
-        'isMe': true,
-        'time': 'Now',
+        'fromMe': true,
+        'text': text,
+        'time': _formatCurrentTime(),
       });
       _controller.clear();
-      _selectedFile = null;
+    });
+
+    // Scroll ke pesan terbaru setelah dikirim
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 
-  Future<void> pickImage() async {
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (picked != null) {
-      final file = File(picked.path);
-      sendMessage(file: file, fileName: picked.name);
-    }
-  }
-
-  Future<void> pickFile() async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result != null && result.files.single.path != null) {
-      final file = File(result.files.single.path!);
-      sendMessage(file: file, fileName: result.files.single.name);
-    }
-  }
-
-  Future<void> _launchPhoneDialer() async {
-    final Uri telUri = Uri(scheme: 'tel', path: widget.phoneNumber);
-    if (await canLaunchUrl(telUri)) {
-      await launchUrl(telUri);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tidak dapat membuka dialer telepon')),
-      );
-    }
+  String _formatCurrentTime() {
+    final now = DateTime.now();
+    final hour = now.hour > 12 ? now.hour - 12 : now.hour;
+    final minute = now.minute.toString().padLeft(2, '0');
+    final ampm = now.hour >= 12 ? 'PM' : 'AM';
+    return '$hour:$minute $ampm';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 6)],
-          ),
+        titleSpacing: 0,
+        backgroundColor: Colors.white,
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.green),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Row(
           children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: CircleAvatar(
-                radius: 26,
-                backgroundImage: AssetImage(widget.avatar),
-                backgroundColor: Colors.grey[200],
-              ),
+            CircleAvatar(
+              backgroundImage: AssetImage(widget.avatar),
+              radius: 20,
             ),
             const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 2),
-                  const Text(
-                    'Online',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
+            Text(
+              widget.name,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
               ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.phone, color: Colors.white, size: 26),
-              onPressed: _launchPhoneDialer,
-              tooltip: 'Telepon',
             ),
           ],
         ),
@@ -150,126 +104,85 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         children: [
           Expanded(
             child: ListView.builder(
-              reverse: true,
-              padding: const EdgeInsets.all(12),
+              controller: _scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               itemCount: messages.length,
               itemBuilder: (context, index) {
-                final msg = messages[messages.length - 1 - index];
-                final isMe = msg['isMe'];
-                final bubbleColor = isMe ? Colors.green[100] : Colors.white;
-                final align =
-                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
-
-                Widget content;
-                if (msg['file'] != null) {
-                  final file = msg['file'] as File;
-                  final name = msg['fileName'] ?? 'File';
-
-                  final isImage =
-                      name.endsWith('.png') ||
-                      name.endsWith('.jpg') ||
-                      name.endsWith('.jpeg');
-
-                  if (isImage) {
-                    content = ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(file, fit: BoxFit.cover),
-                    );
-                  } else {
-                    content = Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                final msg = messages[index];
+                bool fromMe = msg['fromMe'] as bool;
+                return Align(
+                  alignment:
+                      fromMe ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: fromMe ? Colors.green[400] : Colors.grey[300],
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(16),
+                        topRight: const Radius.circular(16),
+                        bottomLeft: Radius.circular(fromMe ? 16 : 0),
+                        bottomRight: Radius.circular(fromMe ? 0 : 16),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Icon(
-                          Icons.insert_drive_file,
-                          size: 40,
-                          color: Colors.grey,
+                        Text(
+                          msg['text'],
+                          style: TextStyle(
+                            color: fromMe ? Colors.white : Colors.black87,
+                            fontSize: 16,
+                          ),
                         ),
-                        Text(name, style: const TextStyle(fontSize: 14)),
+                        const SizedBox(height: 4),
+                        Text(
+                          msg['time'],
+                          style: TextStyle(
+                            color: (fromMe ? Colors.white70 : Colors.black54),
+                            fontSize: 10,
+                          ),
+                        ),
                       ],
-                    );
-                  }
-                } else {
-                  content = Text(
-                    msg['text'],
-                    style: const TextStyle(fontSize: 15),
-                  );
-                }
-
-                return Column(
-                  crossAxisAlignment: align,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: bubbleColor,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 3),
-                        ],
-                      ),
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.75,
-                      ),
-                      child: content,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        msg['time'],
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 );
               },
             ),
           ),
+
+          // Input area
           Container(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-            decoration: const BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Colors.grey.shade300)),
               color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
             ),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.attach_file, color: Colors.grey),
-                  onPressed: pickFile,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.image_outlined, color: Colors.grey),
-                  onPressed: pickImage,
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF0F2F5),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Expanded(
                     child: TextField(
                       controller: _controller,
                       decoration: const InputDecoration(
-                        hintText: 'Tulis pesan...',
+                        hintText: 'Ketik pesan...',
                         border: InputBorder.none,
                       ),
+                      textCapitalization: TextCapitalization.sentences,
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () => sendMessage(text: _controller.text),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green[700],
-                    radius: 22,
-                    child: const Icon(Icons.send, color: Colors.white),
+                  IconButton(
+                    icon: const Icon(Icons.send, color: Colors.green),
+                    onPressed: _sendMessage,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

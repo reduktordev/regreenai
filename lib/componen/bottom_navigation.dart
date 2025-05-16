@@ -32,7 +32,7 @@ class CustomBottomNavigation extends StatelessWidget {
             );
             break;
           case 2:
-            _navigateToScreen(context, const JualBeliPage());
+            _navigateToScreen(context, const BuyForumPage());
             break;
           case 3:
             _navigateToScreen(context, const ForumPage());

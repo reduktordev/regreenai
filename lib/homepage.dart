@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:regreenai/page/chatpage.dart';
+import 'package:regreenai/page/forum_page.dart';
+import 'package:regreenai/page/forum_detail_page.dart';
 import 'package:regreenai/componen/bottom_navigation.dart';
 import 'package:regreenai/data/forum_data.dart';
+import 'package:regreenai/page/blog_page.dart' as blogpage;
+import 'package:regreenai/page/blog_detail_page.dart' as blogdetail;
+import 'package:regreenai/data/blog_data.dart';
+import 'package:regreenai/page/buy_forum.dart';
+import 'package:regreenai/page/produk_detail.dart';
+import 'package:regreenai/data/produk_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,34 +41,6 @@ class _HomePageState extends State<HomePage>
     _controller.dispose();
     super.dispose();
   }
-
-  final List<Map<String, String>> blogList = [
-    {
-      "title": "Cara Menanam Sayuran di Pekarangan",
-      "date": "16 Mei 2025",
-      "image": "assets/blog1.jpg",
-    },
-    {
-      "title": "Strategi Ekspor Pangan Lokal",
-      "date": "12 Mei 2025",
-      "image": "assets/blog2.jpg",
-    },
-    {
-      "title": "Pupuk Organik: Tips dan Trik",
-      "date": "10 Mei 2025",
-      "image": "assets/blog3.jpg",
-    },
-    {
-      "title": "Hidroponik untuk Pemula",
-      "date": "08 Mei 2025",
-      "image": "assets/blog4.jpg",
-    },
-    {
-      "title": "Sistem Irigasi Pintar di Lahan Kering",
-      "date": "05 Mei 2025",
-      "image": "assets/blog5.jpg",
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +74,16 @@ class _HomePageState extends State<HomePage>
               const SizedBox(height: 16),
               _buildSearchBar(),
               const SizedBox(height: 24),
-              _sectionHeader(const Icon(Icons.newspaper), 'News & Blog'),
+              _sectionHeader(
+                const Icon(Icons.newspaper),
+                'News & Blog',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => blogpage.BlogPage()),
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               _blogHorizontalList(),
               const SizedBox(height: 16),
@@ -103,11 +92,26 @@ class _HomePageState extends State<HomePage>
               _sectionHeader(
                 const Icon(Icons.local_fire_department),
                 'Hot Topics',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ForumPage()),
+                  );
+                },
               ),
               const SizedBox(height: 20),
               _forumHorizontalList(),
               const SizedBox(height: 16),
-              _sectionHeader(const Icon(Icons.auto_graph), 'Top Sales'),
+              _sectionHeader(
+                const Icon(Icons.auto_graph),
+                'Top Sales',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const BuyForumPage()),
+                  );
+                },
+              ),
               const SizedBox(height: 12),
               _topSalesGrid(),
               const SizedBox(height: 24),
@@ -192,7 +196,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _sectionHeader(Icon icon, String title) {
+  Widget _sectionHeader(Icon icon, String title, {VoidCallback? onTap}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -206,7 +210,10 @@ class _HomePageState extends State<HomePage>
             ),
           ],
         ),
-        Text('Explore →', style: TextStyle(color: greenColor)),
+        GestureDetector(
+          onTap: onTap,
+          child: Text('Explore →', style: TextStyle(color: greenColor)),
+        ),
       ],
     );
   }
@@ -219,33 +226,48 @@ class _HomePageState extends State<HomePage>
         itemCount: blogList.length,
         itemBuilder: (context, index) {
           final blog = blogList[index];
-          return Container(
-            width: 140,
-            margin: const EdgeInsets.only(right: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    blog["image"]!,
-                    height: 80,
-                    width: 140,
-                    fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (_) => blogdetail.BlogDetailPage(
+                        title: blog["title"]!,
+                        date: blog["date"]!,
+                        image: blog["image"]!,
+                      ),
+                ),
+              );
+            },
+            child: Container(
+              width: 140,
+              margin: const EdgeInsets.only(right: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      blog["image"]!,
+                      height: 80,
+                      width: 140,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  blog["title"]!,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  blog["date"]!,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    blog["title"]!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    blog["date"]!,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -261,43 +283,64 @@ class _HomePageState extends State<HomePage>
         itemCount: forumPosts.length,
         itemBuilder: (context, index) {
           final item = forumPosts[index];
-          return Container(
-            width: 200,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey.shade100,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    item["image"]!,
-                    width: 200,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (_) => ForumDetailPage(
+                        user: item['user']!,
+                        dateTime: DateTime.parse(item['time']!),
+
+                        image: item['image']!,
+                        title: item['title']!,
+                        description: item['description']!,
+                      ),
                 ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    item["title"]!,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+              );
+            },
+            child: Container(
+              width: 200,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey.shade100,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      item["image"]!,
+                      width: 200,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    item["time"]!,
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      item["title"]!,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      item["time"]!,
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -306,35 +349,88 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _topSalesGrid() {
-    return GridView.count(
-      crossAxisCount: 2,
+    final topProducts = products.take(4).toList();
+
+    return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      children: List.generate(4, (index) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              Container(
-                height: 150,
-                width: double.infinity,
-                color: Colors.grey[300],
+      itemCount: topProducts.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 3 / 4,
+      ),
+      itemBuilder: (context, index) {
+        final product = topProducts[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (_) => ProductDetailPage(
+                      name: product["name"]!,
+                      image: product["image"]!,
+                      price: product["price"]!,
+                      stock: product["stock"]!,
+                    ),
               ),
-              Container(
-                color: Colors.black.withOpacity(0.4),
-                padding: const EdgeInsets.all(8),
-                child: const Text(
-                  'Smart Crop\nEfficient and Profitable',
-                  style: TextStyle(color: Colors.white),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
+              children: [
+                Image.asset(
+                  product["image"]!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
-              ),
-            ],
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.black.withOpacity(0.5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          product["name"]!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          "Stock: ${product["stock"]!}",
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          "Price: Rp ${product["price"]!}",
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
-      }),
+      },
     );
   }
 
