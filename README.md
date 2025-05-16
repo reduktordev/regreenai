@@ -9,6 +9,9 @@
 **![Logo](assets/logo.png)`**
 
 ---
+## 🧱 System Architecture
+**![Logo](assets/user(1).jpg)`**
+---
 
 ## 🧑‍🌾 Overview
 
