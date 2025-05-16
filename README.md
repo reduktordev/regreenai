@@ -61,6 +61,19 @@ ReGreenAI is built **for farmers**, by people who care about agriculture and sus
 
 ---
 
+## ⚠️ Important Notice
+
+> 🔧 **Backend Integration Pending**  
+>  
+> The current version of this project **does not yet include full backend integration with Firebase**.  
+> This is due to time constraints and limited access to testing devices.  
+>  
+> ✅ However, the Firebase configuration is already set up and ready to be integrated.  
+> This means features like authentication, real-time database, and cloud storage can be added smoothly in the near future to enhance the app's capabilities.  
+>  
+> We appreciate your understanding and look forward to expanding this functionality soon!
+---
+
 ## 🚀 Getting Started
 Coming soon...
 
